@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Market - Ofertas Especiales</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #e0e0e0;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+    header h1 {
+      font-size: 3em;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+      animation: neonPulse 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes neonPulse {
+      from { text-shadow: 0 0 5px #00ffcc; }
+      to { text-shadow: 0 0 20px #00ffcc; }
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 1.2em;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover, nav ul li a.active {
+      color: #00ffcc;
+    }
+    section {
+      padding: 60px 0;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      color: #00ffcc;
+    }
+    .ofertas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .oferta-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 30px;
+      text-align: center;
+      border-radius: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .oferta-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 15px rgba(0,255,204,0.6);
+    }
+    .icon-box {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+    .oferta-card h3 {
+      color: #00ffcc;
+      margin-bottom: 15px;
+    }
+    .oferta-card p {
+      color: #e0e0e0;
+      font-size: 1.1em;
+    }
+    footer {
+      padding: 20px;
+      text-align: center;
+      border-top: 2px solid rgba(255,255,255,0.1);
+      margin-top: 40px;
+    }
+    .nav-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .nav-icons div {
+      cursor: pointer;
+      position: relative;
+    }
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #00ffcc;
+      color: #24243e;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Estilos para productos en oferta */
+    .productos-oferta {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+    .producto-oferta {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+    .producto-oferta:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 15px rgba(0,255,204,0.6);
+    }
+    .descuento-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #ff3366;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      z-index: 10;
+      box-shadow: 0 0 10px rgba(255,51,102,0.7);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .producto-img {
+      height: 150px;
+      width: 100%;
+      background: rgba(0,255,204,0.08);
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 4em;
+    }
+    .precio-original {
+      text-decoration: line-through;
+      color: #999;
+      margin-right: 10px;
+    }
+    .precio-oferta {
+      color: #ff3366;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    .btn-add-cart {
+      background: transparent;
+      border: 1px solid #00ffcc;
+      color: #00ffcc;
+      padding: 8px 20px;
+      border-radius: 20px;
+      margin-top: 15px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .btn-add-cart:hover {
+      background: #00ffcc;
+      color: #24243e;
+    }
+    .categoria-ofertas {
+      cursor: pointer;
+      padding: 12px 25px;
+      margin: 0 10px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 25px;
+      transition: all 0.3s;
+    }
+    .categoria-ofertas:hover, .categoria-ofertas.active {
+      background: rgba(0,255,204,0.2);
+      border-color: #00ffcc;
+      transform: translateY(-3px);
+    }
+    .categorias-filter {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+    .timer-box {
+      background: rgba(255, 51, 102, 0.1);
+      padding: 10px;
+      border-radius: 10px;
+      margin: 30px auto;
+      max-width: 500px;
+      text-align: center;
+      border: 1px solid rgba(255, 51, 102, 0.3);
+    }
+    .timer-title {
+      color: #ff3366;
+      margin-bottom: 10px;
+    }
+    .timer-count {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    .timer-unit {
+      background: rgba(255, 51, 102, 0.2);
+      padding: 10px 15px;
+      border-radius: 5px;
+      min-width: 80px;
+    }
+    .timer-value {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #ff3366;
+    }
+    .timer-label {
+      font-size: 0.8em;
+      color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+        <path d="M3 9l1-5h16l1 5M5 9v10h14V9M9 22h6" stroke="#00ffcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Stock Market
+    </h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="categorias.html">Categorías</a></li>
+        <li><a href="ofertas.html" class="active">Ofertas</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="nav-icons">
+      <div class="search-icon">
+        <svg width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </div>
+      <div class="cart-icon">
+        <svg width="30" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a1 1 0 001 .81H19a1 1 0 001-.78L23 6H6" />
+        </svg>
+        <span class="cart-count">0</span>
+      </div>
+      <div class="user-icon">
+        <svg width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4" />
+          <path d="M5.5 21a7.5 7.5 0 0113 0" />
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section class="ofertas" id="ofertas">
+    <div class="container">
+      <h2 class="section-title">Ofertas Especiales</h2>
+      
+      <div class="timer-box">
+        <h4 class="timer-title">¡Tiempo restante para estas ofertas!</h4>
+        <div class="timer-count">
+          <div class="timer-unit">
+            <div class="timer-value" id="days">02</div>
+            <div class="timer-label">DÍAS</div>
+          </div>
+          <div class="timer-unit">
+            <div class="timer-value" id="hours">18</div>
+            <div class="timer-label">HORAS</div>
+          </div>
+          <div class="timer-unit">
+            <div class="timer-value" id="minutes">45</div>
+            <div class="timer-label">MINUTOS</div>
+          </div>
+          <div class="timer-unit">
+            <div class="timer-value" id="seconds">30</div>
+            <div class="timer-label">SEGUNDOS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="categorias-filter">
+        <div class="categoria-ofertas active" data-categoria="todas">Todas las ofertas</div>
+        <div class="categoria-ofertas" data-categoria="chaquetas">Chaquetas</div>
+        <div class="categoria-ofertas" data-categoria="pantalones">Pantalones</div>
+        <div class="categoria-ofertas" data-categoria="calzado">Calzado</div>
+      </div>
+      
+      <div class="productos-oferta" id="todas">
+        <!-- Chaquetas en oferta -->
+        <div class="producto-oferta" data-categoria="chaquetas">
+          <span class="descuento-badge">-30%</span>
+          <div class="producto-img">🧥</div>
+          <h4>Chaqueta Deportiva</h4>
+          <div class="precios">
+            <span class="precio-original">$1,200</span>
+            <span class="precio-oferta">$840</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+        
+        <div class="producto-oferta" data-categoria="chaquetas">
+          <span class="descuento-badge">-40%</span>
+          <div class="producto-img">🧥</div>
+          <h4>Chaqueta de Cuero</h4>
+          <div class="precios">
+            <span class="precio-original">$2,500</span>
+            <span class="precio-oferta">$1,500</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+        
+        <div class="producto-oferta" data-categoria="chaquetas">
+          <span class="descuento-badge">-25%</span>
+          <div class="producto-img">🧥</div>
+          <h4>Chaqueta Impermeable</h4>
+          <div class="precios">
+            <span class="precio-original">$950</span>
+            <span class="precio-oferta">$712</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+        
+        <!-- Pantalones en oferta -->
+        <div class="producto-oferta" data-categoria="pantalones">
+          <span class="descuento-badge">-35%</span>
+          <div class="producto-img">👖</div>
+          <h4>Jeans Clásicos</h4>
+          <div class="precios">
+            <span class="precio-original">$850</span>
+            <span class="precio-oferta">$552</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+        
+        <div class="producto-oferta" data-categoria="pantalones">
+          <span class="descuento-badge">-20%</span>
+          <div class="producto-img">👖</div>
+          <h4>Pantalón Formal</h4>
+          <div class="precios">
+            <span class="precio-original">$1,100</span>
+            <span class="precio-oferta">$880</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+        
+        <div class="producto-oferta" data-categoria="pantalones">
+          <span class="descuento-badge">-50%</span>
+          <div class="producto-img">👖</div>
+          <h4>Pantalón Deportivo</h4>
+          <div class="precios">
+            <span class="precio-original">$750</span>
+            <span class="precio-oferta">$375</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+        
+        <!-- Calzado en oferta -->
+        <div class="producto-oferta" data-categoria="calzado">
+          <span class="descuento-badge">-45%</span>
+          <div class="producto-img">👟</div>
+          <h4>Tenis Deportivos</h4>
+          <div class="precios">
+            <span class="precio-original">$1,500</span>
+            <span class="precio-oferta">$825</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+        
+        <div class="producto-oferta" data-categoria="calzado">
+          <span class="descuento-badge">-30%</span>
+          <div class="producto-img">👞</div>
+          <h4>Zapatos Formales</h4>
+          <div class="precios">
+            <span class="precio-original">$1,800</span>
+            <span class="precio-oferta">$1,260</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+        
+        <div class="producto-oferta" data-categoria="calzado">
+          <span class="descuento-badge">-60%</span>
+          <div class="producto-img">👡</div>
+          <h4>Sandalias</h4>
+          <div class="precios">
+            <span class="precio-original">$600</span>
+            <span class="precio-oferta">$240</span>
+          </div>
+          <button class="btn-add-cart">Añadir al carrito</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="ofertas-grid">
+      <div class="oferta-card">
+        <div class="icon-box">🔥</div>
+        <h3>Liquidación de temporada</h3>
+        <p>Hasta 60% de descuento en selección de productos</p>
+      </div>
+      <div class="oferta-card">
+        <div class="icon-box">🎁</div>
+        <h3>Compra y gana</h3>
+        <p>Obtén premios por tus compras mayores a $1000</p>
+      </div>
+      <div class="oferta-card">
+        <div class="icon-box">🚚</div>
+        <h3>Envío gratuito</h3>
+        <p>En compras superiores a $1500</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Stock Market. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Contador regresivo para las ofertas
+    function updateCountdown() {
+      const now = new Date();
+      // Fecha objetivo: 2 días a partir de ahora
+      const target = new Date(now);
+      target.setDate(target.getDate() + 2);
+      target.setHours(23, 59, 59);
+      
+      const difference = target - now;
+      
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+      
+      document.getElementById('days').textContent = days.toString().padStart(2, '0');
+      document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+      document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+      document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+    }
+    
+    // Actualizar contador cada segundo
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+    
+    // Filtrar productos por categoría
+    document.addEventListener('DOMContentLoaded', function() {
+      const filtros = document.querySelectorAll('.categoria-ofertas');
+      const productos = document.querySelectorAll('.producto-oferta');
+      
+      filtros.forEach(filtro => {
+        filtro.addEventListener('click', function() {
+          // Desactivar todos los filtros
+          filtros.forEach(f => f.classList.remove('active'));
+          // Activar el filtro actual
+          this.classList.add('active');
+          
+          const categoria = this.getAttribute('data-categoria');
+          
+          // Mostrar u ocultar productos según categoría
+          productos.forEach(producto => {
+            if (categoria === 'todas' || producto.getAttribute('data-categoria') === categoria) {
+              producto.style.display = 'block';
+            } else {
+              producto.style.display = 'none';
+            }
+          });
+        });
+      });
+      
+      // Evento para añadir al carrito
+      const botonesCarrito = document.querySelectorAll('.btn-add-cart');
+      botonesCarrito.forEach(boton => {
+        boton.addEventListener('click', function() {
+          const cartCount = document.querySelector('.cart-count');
+          const currentCount = parseInt(cartCount.textContent);
+          cartCount.textContent = currentCount + 1;
+          
+          // Animación visual del botón
+          this.innerHTML = "¡Añadido!";
+          this.style.background = "#00ffcc";
+          this.style.color = "#24243e";
+          
+          setTimeout(() => {
+            this.innerHTML = "Añadir al carrito";
+            this.style.background = "transparent";
+            this.style.color = "#00ffcc";
+          }, 1000);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

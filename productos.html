@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Market - Productos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #e0e0e0;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+    header h1 {
+      font-size: 3em;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+      animation: neonPulse 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes neonPulse {
+      from { text-shadow: 0 0 5px #00ffcc; }
+      to { text-shadow: 0 0 20px #00ffcc; }
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 1.2em;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #00ffcc;
+    }
+    section {
+      padding: 60px 0;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-bottom: 30px;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 15px rgba(0,255,204,0.6);
+    }
+    .btn-primary {
+      background: #00ffcc;
+      border: none;
+      transition: background 0.3s;
+    }
+    .btn-primary:hover {
+      background: #00e6b8;
+    }
+    footer {
+      padding: 20px;
+      text-align: center;
+      border-top: 2px solid rgba(255,255,255,0.1);
+      margin-top: 40px;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      color: #00ffcc;
+    }
+    .productos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    .producto {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .producto:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 15px rgba(0,255,204,0.6);
+    }
+    .icon-box {
+      font-size: 3em;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 120px;
+      width: 120px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: rgba(0,255,204,0.1);
+      box-shadow: 0 0 10px rgba(0,255,204,0.3);
+    }
+    .nav-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .nav-icons div {
+      cursor: pointer;
+      position: relative;
+    }
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #00ffcc;
+      color: #24243e;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Estilos para las secciones detalladas de productos */
+    .productos-detalle {
+      display: none;
+      padding: 30px;
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .productos-detalle.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .detalle-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: #00ffcc;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+    .productos-lista {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .producto-item {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .producto-item:hover {
+      transform: translateY(-5px);
+    }
+    .producto-img {
+      height: 150px;
+      width: 100%;
+      background: rgba(0,255,204,0.08);
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+    }
+    .precio {
+      color: #00ffcc;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .btn-add-cart {
+      background: transparent;
+      border: 1px solid #00ffcc;
+      color: #00ffcc;
+      padding: 5px 15px;
+      border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .btn-add-cart:hover {
+      background: #00ffcc;
+      color: #24243e;
+    }
+
+    /* Nuevos estilos para el carrito y sistema de autenticación */
+    .modal-custom {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+    }
+    
+    .modal-content {
+      background: linear-gradient(135deg, #1a1835, #302b63);
+      margin: 5% auto;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 0 25px rgba(0,255,204,0.4);
+      animation: modalFadeIn 0.4s;
+    }
+    
+    @keyframes modalFadeIn {
+      from {opacity: 0; transform: translateY(-50px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .modal-header h2 {
+      color: #00ffcc;
+      margin: 0;
+    }
+    
+    .close-modal {
+      color: #00ffcc;
+      font-size: 28px;
+      font-weight: bold;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .close-modal:hover {
+      color: #00e6b8;
+    }
+    
+    .cart-items {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .cart-item-details {
+      display: flex;
+      align-items: center;
+    }
+    
+    .cart-item-img {
+      font-size: 1.5em;
+      width: 50px;
+      height: 50px;
+      background: rgba(0,255,204,0.1);
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+    }
+    
+    .item-quantity {
+      display: flex;
+      align-items: center;
+    }
+    
+    .quantity-btn {
+      background: rgba(0,255,204,0.1);
+      border: none;
+      color: #00ffcc;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .quantity-value {
+      padding: 0 10px;
+    }
+    
+    .remove-item {
+      background: transparent;
+      border: none;
+      color: #ff6b6b;
+      cursor: pointer;
+    }
+    
+    .cart-summary {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+    }
+    
+    .total-amount {
+      color: #00ffcc;
+      font-weight: bold;
+    }
+    
+    .checkout-btn {
+      background: #00ffcc;
+      color: #24243e;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s;
+    }
+    
+    .checkout-btn:hover {
+      background: #00e6b8;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,255,204,0.4);
+    }
+    
+    .cart-empty {
+      text-align: center;
+      padding: 30px 0;
+    }
+    
+    .cart-empty p {
+      margin-bottom: 20px;
+    }
+    
+    /* Estilos para formularios de inicio de sesión y registro */
+    .auth-form {
+      margin: 20px 0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-control-custom {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: #e0e0e0;
+      transition: all 0.3s;
+    }
+    
+    .form-control-custom:focus {
+      border-color: #00ffcc;
+      box-shadow: 0 0 0 2px rgba(0,255,204,0.2);
+      outline: none;
+    }
+    
+    .form-control-custom::placeholder {
+      color: rgba(224,224,224,0.5);
+    }
+    
+    .auth-switch {
+      text-align: center;
+      margin-top: 15px;
+    }
+    
+    .auth-switch a {
+      color: #00ffcc;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .auth-switch a:hover {
+      text-decoration: underline;
+    }
+    
+    .submit-btn {
+      background: #00ffcc;
+      color: #24243e;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s;
+    }
+    
+    .submit-btn:hover {
+      background: #00e6b8;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,255,204,0.4);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+        <path d="M3 9l1-5h16l1 5M5 9v10h14V9M9 22h6" stroke="#00ffcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Stock Market
+    </h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html" class="active">Productos</a></li>
+        <li><a href="categorias.html">Categorías</a></li>
+        <li><a href="ofertas.html">Ofertas</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="nav-icons">
+      <div class="search-icon">
+        <svg width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </div>
+      <div id="cart-icon" class="cart-icon">
+        <svg width="30" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a1 1 0 001 .81H19a1 1 0 001-.78L23 6H6" />
+        </svg>
+        <span class="cart-count">0</span>
+      </div>
+      <div id="user-icon" class="user-icon">
+        <svg width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4" />
+          <path d="M5.5 21a7.5 7.5 0 0113 0" />
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section class="productos" id="productos">
+    <div class="container">
+      <h2 class="section-title">Productos Destacados</h2>
+      <div class="productos-grid">
+        <div class="producto">
+          <div class="icon-box">🧥</div>
+          <h3>Chaquetas</h3>
+          <p>Gran variedad para cualquier temporada.</p>
+          <a href="#" class="btn btn-primary mt-3 ver-detalle" data-categoria="chaquetas">Ver Detalles</a>
+        </div>
+        <div class="producto">
+          <div class="icon-box">👖</div>
+          <h3>Pantalones</h3>
+          <p>Desde casuales hasta formales.</p>
+          <a href="#" class="btn btn-primary mt-3 ver-detalle" data-categoria="pantalones">Ver Detalles</a>
+        </div>
+        <div class="producto">
+          <div class="icon-box">👟</div>
+          <h3>Calzado</h3>
+          <p>Comodidad y estilo en un solo lugar.</p>
+          <a href="#" class="btn btn-primary mt-3 ver-detalle" data-categoria="calzado">Ver Detalles</a>
+        </div>
+      </div>
+      
+      <!-- Detalle de productos - Chaquetas -->
+      <div id="detalle-chaquetas" class="productos-detalle">
+        <div class="detalle-header">
+          <h3>Chaquetas</h3>
+          <button class="btn-close cerrar-detalle">&times;</button>
+        </div>
+        <div class="productos-lista">
+          <div class="producto-item">
+            <div class="producto-img">🧥</div>
+            <h4>Chaqueta Deportiva</h4>
+            <p class="precio">$1,200</p>
+            <button class="btn-add-cart" data-id="1" data-nombre="Chaqueta Deportiva" data-precio="1200" data-emoji="🧥">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🧥</div>
+            <h4>Chaqueta de Cuero</h4>
+            <p class="precio">$2,500</p>
+            <button class="btn-add-cart" data-id="2" data-nombre="Chaqueta de Cuero" data-precio="2500" data-emoji="🧥">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🧥</div>
+            <h4>Chaqueta Impermeable</h4>
+            <p class="precio">$950</p>
+            <button class="btn-add-cart" data-id="3" data-nombre="Chaqueta Impermeable" data-precio="950" data-emoji="🧥">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🧥</div>
+            <h4>Blazer Formal</h4>
+            <p class="precio">$1,800</p>
+            <button class="btn-add-cart" data-id="4" data-nombre="Blazer Formal" data-precio="1800" data-emoji="🧥">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🧥</div>
+            <h4>Chamarra de Mezclilla</h4>
+            <p class="precio">$1,100</p>
+            <button class="btn-add-cart" data-id="5" data-nombre="Chamarra de Mezclilla" data-precio="1100" data-emoji="🧥">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🧥</div>
+            <h4>Chaqueta de Invierno</h4>
+            <p class="precio">$2,200</p>
+            <button class="btn-add-cart" data-id="6" data-nombre="Chaqueta de Invierno" data-precio="2200" data-emoji="🧥">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Detalle de productos - Pantalones -->
+      <div id="detalle-pantalones" class="productos-detalle">
+        <div class="detalle-header">
+          <h3>Pantalones</h3>
+          <button class="btn-close cerrar-detalle">&times;</button>
+        </div>
+        <div class="productos-lista">
+          <div class="producto-item">
+            <div class="producto-img">👖</div>
+            <h4>Jeans Clásicos</h4>
+            <p class="precio">$850</p>
+            <button class="btn-add-cart" data-id="7" data-nombre="Jeans Clásicos" data-precio="850" data-emoji="👖">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👖</div>
+            <h4>Pantalón Formal</h4>
+            <p class="precio">$1,100</p>
+            <button class="btn-add-cart" data-id="8" data-nombre="Pantalón Formal" data-precio="1100" data-emoji="👖">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👖</div>
+            <h4>Pantalón Deportivo</h4>
+            <p class="precio">$750</p>
+            <button class="btn-add-cart" data-id="9" data-nombre="Pantalón Deportivo" data-precio="750" data-emoji="👖">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👖</div>
+            <h4>Shorts de Playa</h4>
+            <p class="precio">$550</p>
+            <button class="btn-add-cart" data-id="10" data-nombre="Shorts de Playa" data-precio="550" data-emoji="👖">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👖</div>
+            <h4>Pantalón Chino</h4>
+            <p class="precio">$950</p>
+            <button class="btn-add-cart" data-id="11" data-nombre="Pantalón Chino" data-precio="950" data-emoji="👖">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👖</div>
+            <h4>Bermudas</h4>
+            <p class="precio">$650</p>
+            <button class="btn-add-cart" data-id="12" data-nombre="Bermudas" data-precio="650" data-emoji="👖">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Detalle de productos - Calzado -->
+      <div id="detalle-calzado" class="productos-detalle">
+        <div class="detalle-header">
+          <h3>Calzado</h3>
+          <button class="btn-close cerrar-detalle">&times;</button>
+        </div>
+        <div class="productos-lista">
+          <div class="producto-item">
+            <div class="producto-img">👟</div>
+            <h4>Tenis Deportivos</h4>
+            <p class="precio">$1,500</p>
+            <button class="btn-add-cart" data-id="13" data-nombre="Tenis Deportivos" data-precio="1500" data-emoji="👟">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👢</div>
+            <h4>Botas</h4>
+            <p class="precio">$1,800</p>
+            <button class="btn-add-cart" data-id="14" data-nombre="Botas" data-precio="1800" data-emoji="👢">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👡</div>
+            <h4>Sandalias</h4>
+            <p class="precio">$600</p>
+            <button class="btn-add-cart" data-id="15" data-nombre="Sandalias" data-precio="600" data-emoji="👡">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🥾</div>
+            <h4>Botas</h4>
+            <p class="precio">$2,100</p>
+            <button class="btn-add-cart" data-id="16" data-nombre="Botas" data-precio="2100" data-emoji="🥾">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👟</div>
+            <h4>Mocasines</h4>
+            <p class="precio">$1,300</p>
+            <button class="btn-add-cart" data-id="17" data-nombre="Mocasines" data-precio="1300" data-emoji="👟">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🩰</div>
+            <h4>Zapatillas De Ballet</h4>
+            <p class="precio">$300</p>
+            <button class="btn-add-cart" data-id="17" data-nombre="Zapatillas De Ballet" data-precio="300" data-emoji="🩰">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👞</div>
+            <h4>Tenis Casual</h4>
+            <p class="precio">$1,200</p>
+            <button class="btn-add-cart" data-id="18" data-nombre="Tenis Casual" data-precio="1200" data-emoji="👞">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🥿</div>
+            <h4>Bailarina</h4>
+            <p class="precio">$1,900</p>
+            <button class="btn-add-cart" data-id="18" data-nombre="Bailarina" data-precio="1900" data-emoji="🥿">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Carrito -->
+  <div id="cart-modal" class="modal-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Tu Carrito</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      
+      <div class="checkout-form">
+        <div class="form-group">
+          <input type="text" class="form-control-custom" id="checkout-address" placeholder="Dirección de envío" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control-custom" id="checkout-city" placeholder="Ciudad" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control-custom" id="checkout-postal" placeholder="Código Postal" required>
+        </div>
+        <div class="form-group">
+          <select class="form-control-custom" id="checkout-payment">
+            <option value="" disabled selected>Método de pago</option>
+            <option value="credit-card">Tarjeta de Crédito</option>
+            <option value="debit-card">Tarjeta de Débito</option>
+            <option value="paypal">PayPal</option>
+          </select>
+        </div>
+        
+        <div id="payment-details" style="display:none;">
+          <!-- Se mostrará dinámicamente según el método de pago seleccionado -->
+        </div>
+        
+        <div class="cart-summary">
+          <div class="cart-total">
+            <span>Total:</span>
+            <span class="total-amount" id="checkout-total">$0.00</span>
+          </div>
+          <button class="checkout-btn" id="complete-purchase">Completar Compra</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Stock Market. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Variables para gestionar el estado
+      let isLoggedIn = false;
+      let username = '';
+      let cartItems = [];
+      
+      // Elementos DOM
+      const cartIcon = document.getElementById('cart-icon');
+      const userIcon = document.getElementById('user-icon');
+      const cartModal = document.getElementById('cart-modal');
+      const authModal = document.getElementById('auth-modal');
+      const checkoutModal = document.getElementById('checkout-modal');
+      const cartContent = document.getElementById('cart-content');
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const botonesDetalle = document.querySelectorAll('.ver-detalle');
+      const seccionesDetalle = document.querySelectorAll('.productos-detalle');
+      const botonesCerrar = document.querySelectorAll('.cerrar-detalle');
+      const botonesCarrito = document.querySelectorAll('.btn-add-cart');
+      const closeBtns = document.querySelectorAll('.close-modal');
+      
+      // Event Listeners para modales
+      cartIcon.addEventListener('click', function() {
+        if (isLoggedIn) {
+          updateCartDisplay();
+          openModal(cartModal);
+        } else {
+          openModal(authModal);
+          alert('Debes iniciar sesión para ver tu carrito');
+        }
+      });
+      
+      userIcon.addEventListener('click', function() {
+        if (isLoggedIn) {
+          // Si está logueado, mostrar opciones de usuario
+          alert(`Hola ${username}! Aquí podrías ver tu perfil, pedidos, etc.`);
+        } else {
+          // Si no está logueado, mostrar modal de autenticación
+          openModal(authModal);
+        }
+      });
+      
+      // Cerrar modales
+      closeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const modal = this.closest('.modal-custom');
+          closeModal(modal);
+        });
+      });
+      
+      // Cambiar entre formularios de inicio de sesión y registro
+      document.getElementById('switch-to-register').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+        document.getElementById('auth-title').textContent = 'Registro';
+      });
+      
+      document.getElementById('switch-to-login').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('register-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('auth-title').textContent = 'Iniciar Sesión';
+      });
+      
+      // Simulación de inicio de sesión
+      document.getElementById('login-submit').addEventListener('click', function() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        
+        // Validación simple
+        if (email && password) {
+          // Simulamos un inicio de sesión exitoso
+          isLoggedIn = true;
+          username = email.split('@')[0]; // Usamos la parte del email como nombre de usuario
+          closeModal(authModal);
+          alert(`¡Bienvenido, ${username}!`);
+        } else {
+          alert('Por favor completa todos los campos');
+        }
+      });
+      
+      // Simulación de registro
+      document.getElementById('register-submit').addEventListener('click', function() {
+        const name = document.getElementById('register-name').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const confirmPassword = document.getElementById('register-confirm-password').value;
+        
+        // Validación simple
+        if (name && email && password && confirmPassword) {
+          if (password !== confirmPassword) {
+            alert('Las contraseñas no coinciden');
+            return;
+          }
+          
+          // Simulamos un registro exitoso
+          isLoggedIn = true;
+          username = name;
+          closeModal(authModal);
+          alert(`¡Cuenta creada exitosamente! Bienvenido, ${username}`);
+        } else {
+          alert('Por favor completa todos los campos');
+        }
+      });
+      
+      // Mostrar detalles de productos
+      botonesDetalle.forEach(boton => {
+        boton.addEventListener('click', function(e) {
+          e.preventDefault();
+          const categoria = this.getAttribute('data-categoria');
+          const detalleSection = document.getElementById(`detalle-${categoria}`);
+          
+          // Ocultar todas las secciones de detalle
+          seccionesDetalle.forEach(seccion => {
+            seccion.classList.remove('active');
+          });
+          
+          // Mostrar la sección correspondiente
+          detalleSection.classList.add('active');
+          
+          // Scroll suave hacia la sección
+          detalleSection.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+      
+      // Cerrar detalles
+      botonesCerrar.forEach(boton => {
+        boton.addEventListener('click', function() {
+          const seccionPadre = this.closest('.productos-detalle');
+          seccionPadre.classList.remove('active');
+        });
+      });
+      
+      // Añadir productos al carrito
+      botonesCarrito.forEach(boton => {
+        boton.addEventListener('click', function() {
+          const id = this.dataset.id;
+          const nombre = this.dataset.nombre;
+          const precio = parseInt(this.dataset.precio);
+          const emoji = this.dataset.emoji;
+          
+          // Verificar si el usuario está logueado antes de añadir al carrito
+          if (!isLoggedIn) {
+            openModal(authModal);
+            alert('Debes iniciar sesión para añadir productos al carrito');
+            return;
+          }
+          
+          // Buscar si el producto ya está en el carrito
+          const existingItem = cartItems.find(item => item.id === id);
+          
+          if (existingItem) {
+            existingItem.cantidad += 1;
+          } else {
+            cartItems.push({
+              id: id,
+              nombre: nombre,
+              precio: precio,
+              emoji: emoji,
+              cantidad: 1
+            });
+          }
+          
+          // Actualizar contador del carrito
+          updateCartCounter();
+          
+          // Animación visual del botón
+          this.innerHTML = "¡Añadido!";
+          this.style.background = "#00ffcc";
+          this.style.color = "#24243e";
+          
+          setTimeout(() => {
+            this.innerHTML = "Añadir al carrito";
+            this.style.background = "transparent";
+            this.style.color = "#00ffcc";
+          }, 1000);
+        });
+      });
+      
+      // Método de pago dinámico
+      document.getElementById('checkout-payment').addEventListener('change', function() {
+        const paymentDetails = document.getElementById('payment-details');
+        const paymentMethod = this.value;
+        
+        if (paymentMethod === 'credit-card' || paymentMethod === 'debit-card') {
+          paymentDetails.innerHTML = `
+            <div class="form-group">
+              <input type="text" class="form-control-custom" placeholder="Número de tarjeta" required>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <input type="text" class="form-control-custom" placeholder="MM/AA" required>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <input type="text" class="form-control-custom" placeholder="CVV" required>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control-custom" placeholder="Nombre en la tarjeta" required>
+            </div>
+          `;
+          paymentDetails.style.display = 'block';
+        } else if (paymentMethod === 'paypal') {
+          paymentDetails.innerHTML = `
+            <div class="form-group">
+              <input type="email" class="form-control-custom" placeholder="Correo de PayPal" required>
+            </div>
+          `;
+          paymentDetails.style.display = 'block';
+        } else {
+          paymentDetails.style.display = 'none';
+        }
+      });
+      
+      // Simulación de compra
+      document.getElementById('complete-purchase').addEventListener('click', function() {
+        alert('¡Compra realizada con éxito! Gracias por tu pedido.');
+        cartItems = [];
+        updateCartCounter();
+        closeModal(checkoutModal);
+      });
+      
+      // Funciones auxiliares
+      function openModal(modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevenir scroll
+      }
+      
+      function closeModal(modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = ''; // Restaurar scroll
+      }
+      
+      function updateCartCounter() {
+        const cartCount = document.querySelector('.cart-count');
+        const totalItems = cartItems.reduce((total, item) => total + item.cantidad, 0);
+        cartCount.textContent = totalItems;
+      }
+      
+      function updateCartDisplay() {
+        if (cartItems.length === 0) {
+          // Mostrar mensaje de carrito vacío
+          cartContent.innerHTML = `
+            <div class="cart-empty">
+              <p>Tu carrito está vacío</p>
+              <button class="btn btn-primary" onclick="closeModal(document.getElementById('cart-modal'))">Seguir comprando</button>
+            </div>
+          `;
+          return;
+        }
+        
+        // Construir HTML para los items del carrito
+        let cartHTML = '<div class="cart-items">';
+        let totalAmount = 0;
+        
+        cartItems.forEach(item => {
+          const itemTotal = item.precio * item.cantidad;
+          totalAmount += itemTotal;
+          
+          cartHTML += `
+            <div class="cart-item" data-id="${item.id}">
+              <div class="cart-item-details">
+                <div class="cart-item-img">${item.emoji}</div>
+                <div class="cart-item-info">
+                  <h4>${item.nombre}</h4>
+                  <p class="precio">${item.precio.toLocaleString()}</p>
+                </div>
+              </div>
+              <div class="item-quantity">
+                <button class="quantity-btn decrease-quantity" data-id="${item.id}">-</button>
+                <span class="quantity-value">${item.cantidad}</span>
+                <button class="quantity-btn increase-quantity" data-id="${item.id}">+</button>
+              </div>
+              <div class="item-total">
+                ${itemTotal.toLocaleString()}
+              </div>
+              <button class="remove-item" data-id="${item.id}">&times;</button>
+            </div>
+          `;
+        });
+        
+        cartHTML += '</div>';
+        
+        // Añadir el resumen y botón de checkout
+        cartHTML += `
+          <div class="cart-summary">
+            <div class="cart-total">
+              <span>Total:</span>
+              <span class="total-amount">${totalAmount.toLocaleString()}</span>
+            </div>
+            <button id="proceed-checkout" class="checkout-btn">Proceder al Pago</button>
+          </div>
+        `;
+        
+        cartContent.innerHTML = cartHTML;
+        
+        // Actualizar el total en el modal de checkout
+        document.getElementById('checkout-total').textContent = `${totalAmount.toLocaleString()}`;
+        
+        // Añadir event listeners para los botones de cantidad y eliminar
+        const decreaseBtns = document.querySelectorAll('.decrease-quantity');
+        const increaseBtns = document.querySelectorAll('.increase-quantity');
+        const removeBtns = document.querySelectorAll('.remove-item');
+        const checkoutBtn = document.getElementById('proceed-checkout');
+        
+        decreaseBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            decreaseItemQuantity(id);
+          });
+        });
+        
+        increaseBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            increaseItemQuantity(id);
+          });
+        });
+        
+        removeBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            removeItemFromCart(id);
+          });
+        });
+        
+        if (checkoutBtn) {
+          checkoutBtn.addEventListener('click', function() {
+            closeModal(cartModal);
+            openModal(checkoutModal);
+          });
+        }
+      }
+      
+      function decreaseItemQuantity(id) {
+        const item = cartItems.find(item => item.id === id);
+        if (item.cantidad > 1) {
+          item.cantidad -= 1;
+        } else {
+          removeItemFromCart(id);
+          return;
+        }
+        updateCartCounter();
+        updateCartDisplay();
+      }
+      
+      function increaseItemQuantity(id) {
+        const item = cartItems.find(item => item.id === id);
+        item.cantidad += 1;
+        updateCartCounter();
+        updateCartDisplay();
+      }
+      
+      function removeItemFromCart(id) {
+        cartItems = cartItems.filter(item => item.id !== id);
+        updateCartCounter();
+        updateCartDisplay();
+      }
+      
+      // Cerrar modales al hacer clic fuera del contenido
+      window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal-custom')) {
+          closeModal(event.target);
+        }
+      });
+    });
+  </script>
+</body>
+</html>;</button>
+      </div>
+      <div id="cart-content">
+        <!-- Este contenido se generará dinámicamente con JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Autenticación -->
+  <div id="auth-modal" class="modal-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="auth-title">Iniciar Sesión</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      
+      <!-- Formulario de Inicio de Sesión -->
+      <div id="login-form" class="auth-form">
+        <div class="form-group">
+          <input type="email" class="form-control-custom" id="login-email" placeholder="Correo electrónico" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control-custom" id="login-password" placeholder="Contraseña" required>
+        </div>
+        <button type="submit" class="submit-btn" id="login-submit">Iniciar Sesión</button>
+        <div class="auth-switch">
+          <p>¿No tienes una cuenta? <a href="#" id="switch-to-register">Regístrate aquí</a></p>
+        </div>
+      </div>
+      
+      <!-- Formulario de Registro -->
+      <div id="register-form" class="auth-form" style="display:none;">
+        <div class="form-group">
+          <input type="text" class="form-control-custom" id="register-name" placeholder="Nombre completo" required>
+        </div>
+        <div class="form-group">
+          <input type="email" class="form-control-custom" id="register-email" placeholder="Correo electrónico" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control-custom" id="register-password" placeholder="Contraseña" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control-custom" id="register-confirm-password" placeholder="Confirmar contraseña" required>
+        </div>
+        <button type="submit" class="submit-btn" id="register-submit">Registrarse</button>
+        <div class="auth-switch">
+          <p>¿Ya tienes una cuenta? <a href="#" id="switch-to-login">Inicia sesión aquí</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Checkout/Pago -->
+  <div id="checkout-modal" class="modal-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Finalizar Compra</h2>
+        <button class="close-modal">&times

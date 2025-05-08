@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Market - Categorías</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #e0e0e0;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+    header h1 {
+      font-size: 3em;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+      animation: neonPulse 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes neonPulse {
+      from { text-shadow: 0 0 5px #00ffcc; }
+      to { text-shadow: 0 0 20px #00ffcc; }
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 1.2em;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover, nav ul li a.active {
+      color: #00ffcc;
+    }
+    section {
+      padding: 60px 0;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      color: #00ffcc;
+    }
+    .categorias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .categoria-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 30px;
+      text-align: center;
+      border-radius: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .categoria-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 15px rgba(0,255,204,0.6);
+    }
+    .icon-box {
+      font-size: 3em;
+      margin-bottom: 15px;
+    }
+    .categoria-card h3 {
+      color: #00ffcc;
+      margin-top: 10px;
+    }
+    footer {
+      padding: 20px;
+      text-align: center;
+      border-top: 2px solid rgba(255,255,255,0.1);
+      margin-top: 40px;
+    }
+    .nav-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .nav-icons div {
+      cursor: pointer;
+      position: relative;
+    }
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #00ffcc;
+      color: #24243e;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Estilos para las secciones detalladas de productos */
+    .productos-detalle {
+      display: none;
+      padding: 30px;
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .productos-detalle.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .detalle-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: #00ffcc;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+    .productos-lista {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .producto-item {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .producto-item:hover {
+      transform: translateY(-5px);
+    }
+    .producto-img {
+      height: 150px;
+      width: 100%;
+      background: rgba(0,255,204,0.08);
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+    }
+    .precio {
+      color: #00ffcc;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .btn-add-cart {
+      background: transparent;
+      border: 1px solid #00ffcc;
+      color: #00ffcc;
+      padding: 5px 15px;
+      border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .btn-add-cart:hover {
+      background: #00ffcc;
+      color: #24243e;
+    }
+
+     /* Nuevos estilos para el carrito y sistema de autenticación */
+     .modal-custom {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+    }
+    
+    .modal-content {
+      background: linear-gradient(135deg, #1a1835, #302b63);
+      margin: 5% auto;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 0 25px rgba(0,255,204,0.4);
+      animation: modalFadeIn 0.4s;
+    }
+    
+    @keyframes modalFadeIn {
+      from {opacity: 0; transform: translateY(-50px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .modal-header h2 {
+      color: #00ffcc;
+      margin: 0;
+    }
+    
+    .close-modal {
+      color: #00ffcc;
+      font-size: 28px;
+      font-weight: bold;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .close-modal:hover {
+      color: #00e6b8;
+    }
+    
+    .cart-items {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .cart-item-details {
+      display: flex;
+      align-items: center;
+    }
+    
+    .cart-item-img {
+      font-size: 1.5em;
+      width: 50px;
+      height: 50px;
+      background: rgba(0,255,204,0.1);
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+    }
+    
+    .item-quantity {
+      display: flex;
+      align-items: center;
+    }
+    
+    .quantity-btn {
+      background: rgba(0,255,204,0.1);
+      border: none;
+      color: #00ffcc;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .quantity-value {
+      padding: 0 10px;
+    }
+    
+    .remove-item {
+      background: transparent;
+      border: none;
+      color: #ff6b6b;
+      cursor: pointer;
+    }
+    
+    .cart-summary {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+    }
+    
+    .total-amount {
+      color: #00ffcc;
+      font-weight: bold;
+    }
+    
+    .checkout-btn {
+      background: #00ffcc;
+      color: #24243e;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s;
+    }
+    
+    .checkout-btn:hover {
+      background: #00e6b8;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,255,204,0.4);
+    }
+    
+    .cart-empty {
+      text-align: center;
+      padding: 30px 0;
+    }
+    
+    .cart-empty p {
+      margin-bottom: 20px;
+    }
+    
+    /* Estilos para formularios de inicio de sesión y registro */
+    .auth-form {
+      margin: 20px 0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-control-custom {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: #e0e0e0;
+      transition: all 0.3s;
+    }
+    
+    .form-control-custom:focus {
+      border-color: #00ffcc;
+      box-shadow: 0 0 0 2px rgba(0,255,204,0.2);
+      outline: none;
+    }
+    
+    .form-control-custom::placeholder {
+      color: rgba(224,224,224,0.5);
+    }
+    
+    .auth-switch {
+      text-align: center;
+      margin-top: 15px;
+    }
+    
+    .auth-switch a {
+      color: #00ffcc;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .auth-switch a:hover {
+      text-decoration: underline;
+    }
+    
+    .submit-btn {
+      background: #00ffcc;
+      color: #24243e;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s;
+    }
+    
+    .submit-btn:hover {
+      background: #00e6b8;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,255,204,0.4);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+        <path d="M3 9l1-5h16l1 5M5 9v10h14V9M9 22h6" stroke="#00ffcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Stock Market
+    </h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="categorias.html" class="active">Categorías</a></li>
+        <li><a href="ofertas.html">Ofertas</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav><div class="nav-icons">
+      <div class="search-icon">
+        <svg width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </div>
+      <div id="cart-icon" class="cart-icon">
+        <svg width="30" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a1 1 0 001 .81H19a1 1 0 001-.78L23 6H6" />
+        </svg>
+        <span class="cart-count">0</span>
+      </div>
+      <div id="user-icon" class="user-icon">
+        <svg width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4" />
+          <path d="M5.5 21a7.5 7.5 0 0113 0" />
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section class="categorias" id="categorias">
+    <div class="container">
+      <h2 class="section-title">Categorías</h2>
+      <div class="categorias-grid">
+        <div class="categoria-card" data-categoria="ropa">
+          <div class="icon-box">👕</div>
+          <h3>Ropa</h3>
+        </div>
+        <div class="categoria-card" data-categoria="accesorios">
+          <div class="icon-box">👜</div>
+          <h3>Accesorios</h3>
+        </div>
+        <div class="categoria-card" data-categoria="hogar">
+          <div class="icon-box">🏠</div>
+          <h3>Hogar</h3>
+        </div>
+        <div class="categoria-card" data-categoria="mochilas">
+          <div class="icon-box">🎒</div>
+          <h3>Mochilas</h3>
+        </div>
+      </div>
+      
+      <!-- Detalle de productos - Ropa -->
+      <div id="detalle-ropa" class="productos-detalle">
+        <div class="detalle-header">
+          <h3>Ropa</h3>
+          <button class="btn-close cerrar-detalle">&times;</button>
+        </div>
+        <div class="productos-lista">
+          <div class="producto-item">
+            <div class="producto-img">👕</div>
+            <h4>Camiseta Básica</h4>
+            <p class="precio">$350</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👕</div>
+            <h4>Camiseta Estampada</h4>
+            <p class="precio">$450</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🥼</div>
+            <h4>Bata De Laboratorio</h4>
+            <p class="precio">$650</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👔</div>
+            <h4>Camisa Formal</h4>
+            <p class="precio">$650</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🦺</div>
+            <h4>Chaleco De Seguridad</h4>
+            <p class="precio">$650</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Detalle de productos - Accesorios -->
+      <div id="detalle-accesorios" class="productos-detalle">
+        <div class="detalle-header">
+          <h3>Accesorios</h3>
+          <button class="btn-close cerrar-detalle">&times;</button>
+        </div>
+        <div class="productos-lista">
+          <div class="producto-item">
+            <div class="producto-img">👜</div>
+            <h4>Bolsa de Mano</h4>
+            <p class="precio">$750</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">👓</div>
+            <h4>Gafas de Sol</h4>
+            <p class="precio">$500</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">⌚</div>
+            <h4>Reloj Casual</h4>
+            <p class="precio">$1,200</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🎧</div>
+            <h4>Airpods de David</h4>
+            <p class="precio">$6,200</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">📿</div>
+            <h4>Rosario</h4>
+            <p class="precio">$5,000</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">💍</div>
+            <h4>Anillo</h4>
+            <p class="precio">$1,000</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Detalle de productos - Hogar -->
+      <div id="detalle-hogar" class="productos-detalle">
+        <div class="detalle-header">
+          <h3>Hogar</h3>
+          <button class="btn-close cerrar-detalle">&times;</button>
+        </div>
+        <div class="productos-lista">
+          <div class="producto-item">
+            <div class="producto-img">🛋️</div>
+            <h4>Cojín Decorativo</h4>
+            <p class="precio">$300</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🛏️</div>
+            <h4>Juego de Sábanas</h4>
+            <p class="precio">$850</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🪑</div>
+            <h4>Silla Ergonómica</h4>
+            <p class="precio">$1,500</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">📞</div>
+            <h4>Telefono</h4>
+            <p class="precio">$6,500</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">💻</div>
+            <h4>Ordenador Portátil</h4>
+            <p class="precio">$15,500</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🖥️</div>
+            <h4>Ordenador </h4>
+            <p class="precio">$12,500</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Detalle de productos - Mochilas -->
+      <div id="detalle-mochilas" class="productos-detalle">
+        <div class="detalle-header">
+          <h3>Mochilas</h3>
+          <button class="btn-close cerrar-detalle">&times;</button>
+        </div>
+        <div class="productos-lista">
+          <div class="producto-item">
+            <div class="producto-img">🎒</div>
+            <h4>Mochila Escolar</h4>
+            <p class="precio">$650</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🎒</div>
+            <h4>Mochila para Laptop</h4>
+            <p class="precio">$950</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+          <div class="producto-item">
+            <div class="producto-img">🎒</div>
+            <h4>Mochila de Viaje</h4>
+            <p class="precio">$1,200</p>
+            <button class="btn-add-cart">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Stock Market. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Script para mostrar/ocultar los detalles de categorías
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elementos para mostrar detalles
+      const tarjetasCategorias = document.querySelectorAll('.categoria-card');
+      const seccionesDetalle = document.querySelectorAll('.productos-detalle');
+      const botonesCerrar = document.querySelectorAll('.cerrar-detalle');
+      
+      // Evento para mostrar detalles al hacer clic en una categoría
+      tarjetasCategorias.forEach(tarjeta => {
+        tarjeta.addEventListener('click', function() {
+          const categoria = this.getAttribute('data-categoria');
+          const detalleSection = document.getElementById(`detalle-${categoria}`);
+          
+          // Ocultar todas las secciones de detalle
+          seccionesDetalle.forEach(seccion => {
+            seccion.classList.remove('active');
+          });
+          
+          // Mostrar la sección correspondiente
+          detalleSection.classList.add('active');
+          
+          // Scroll suave hacia la sección
+          detalleSection.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+      
+      // Evento para cerrar detalles
+      botonesCerrar.forEach(boton => {
+        boton.addEventListener('click', function() {
+          const seccionPadre = this.closest('.productos-detalle');
+          seccionPadre.classList.remove('active');
+        });
+      });
+      
+      // Evento para añadir al carrito (simulado)
+      const botonesCarrito = document.querySelectorAll('.btn-add-cart');
+      botonesCarrito.forEach(boton => {
+        boton.addEventListener('click', function() {
+          const cartCount = document.querySelector('.cart-count');
+          const currentCount = parseInt(cartCount.textContent);
+          cartCount.textContent = currentCount + 1;
+          
+          // Animación visual del botón
+          this.innerHTML = "¡Añadido!";
+          this.style.background = "#00ffcc";
+          this.style.color = "#24243e";
+          
+          setTimeout(() => {
+            this.innerHTML = "Añadir al carrito";
+            this.style.background = "transparent";
+            this.style.color = "#00ffcc";
+          }, 1000);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

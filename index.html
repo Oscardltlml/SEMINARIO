@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Market - Tienda de Mayoreo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #e0e0e0;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+    header h1 {
+      font-size: 3em;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+      animation: neonPulse 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes neonPulse {
+      from { text-shadow: 0 0 5px #00ffcc; }
+      to { text-shadow: 0 0 20px #00ffcc; }
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 1.2em;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #00ffcc;
+    }
+    section {
+      padding: 60px 0;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-bottom: 30px;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 15px rgba(0,255,204,0.6);
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+    .card-body {
+      text-align: center;
+    }
+    .btn-primary {
+      background: #00ffcc;
+      border: none;
+      transition: background 0.3s;
+    }
+    .btn-primary:hover {
+      background: #00e6b8;
+    }
+    footer {
+      padding: 20px;
+      text-align: center;
+      border-top: 2px solid rgba(255,255,255,0.1);
+      margin-top: 40px;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      color: #00ffcc;
+    }
+    .nav-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .nav-icons div {
+      cursor: pointer;
+      position: relative;
+    }
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #00ffcc;
+      color: #24243e;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+    }
+    .modal-content {
+      background: linear-gradient(135deg, #1a1835, #302b63);
+      margin: 10% auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,255,204,0.4);
+      position: relative;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #00ffcc;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #00ffcc;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
+      color: #e0e0e0;
+      border-radius: 5px;
+    }
+    .form-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .form-link a {
+      color: #00ffcc;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+        <path d="M3 9l1-5h16l1 5M5 9v10h14V9M9 22h6" stroke="#00ffcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Stock Market
+    </h1>
+    <nav>
+      <ul>
+        <li><a href="index.html" class="active">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="categorias.html">Categorías</a></li>
+        <li><a href="ofertas.html">Ofertas</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="nav-icons">
+      <div class="search-icon">
+        <svg width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </div>
+      <div class="cart-icon" id="cart-icon">
+        <svg width="30" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a1 1 0 001 .81H19a1 1 0 001-.78L23 6H6" />
+        </svg>
+        <span class="cart-count">0</span>
+      </div>
+      <div class="user-icon" id="user-icon">
+        <svg width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4" />
+          <path d="M5.5 21a7.5 7.5 0 0113 0" />
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section class="container">
+    <div class="text-center">
+      <h2 class="section-title">Bienvenido a Stock Market</h2>
+      <p>Tu tienda de mayoreo con los mejores precios y una experiencia futurista.</p>
+    </div>
+  </section>
+
+  <!-- Modal de inicio de sesión -->
+  <div class="modal" id="login-modal">
+    <div class="modal-content">
+      <span class="close" id="close-login">&times;</span>
+      <h2 class="section-title">Iniciar Sesión</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Contraseña</label>
+          <input type="password" id="login-password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+        <p class="form-link">¿No tienes cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de registro -->
+  <div class="modal" id="register-modal">
+    <div class="modal-content">
+      <span class="close" id="close-register">&times;</span>
+      <h2 class="section-title">Registro</h2>
+      <form id="register-form">
+        <div class="form-group">
+          <label for="register-nombre">Nombre</label>
+          <input type="text" id="register-nombre" required />
+        </div>
+        <div class="form-group">
+          <label for="register-apellido">Apellido</label>
+          <input type="text" id="register-apellido" required />
+        </div>
+        <div class="form-group">
+          <label for="register-email">Email</label>
+          <input type="email" id="register-email" required />
+        </div>
+        <div class="form-group">
+          <label for="register-password">Contraseña</label>
+          <input type="password" id="register-password" required />
+        </div>
+        <div class="form-group">
+          <label for="register-confirm-password">Confirmar Contraseña</label>
+          <input type="password" id="register-confirm-password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
+        <p class="form-link">¿Ya tienes cuenta? <a href="#" id="show-login">Inicia sesión aquí</a></p>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Stock Market. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Script para manejar los modales
+    document.getElementById('user-icon').addEventListener('click', function() {
+      document.getElementById('login-modal').style.display = 'block';
+    });
+    
+    document.getElementById('close-login').addEventListener('click', function() {
+      document.getElementById('login-modal').style.display = 'none';
+    });
+    
+    document.getElementById('close-register').addEventListener('click', function() {
+      document.getElementById('register-modal').style.display = 'none';
+    });
+    
+    document.getElementById('show-register').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('login-modal').style.display = 'none';
+      document.getElementById('register-modal').style.display = 'block';
+    });
+    
+    document.getElementById('show-login').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('register-modal').style.display = 'none';
+      document.getElementById('login-modal').style.display = 'block';
+    });
+    
+    window.addEventListener('click', function(e) {
+      if (e.target == document.getElementById('login-modal')) {
+        document.getElementById('login-modal').style.display = 'none';
+      }
+      if (e.target == document.getElementById('register-modal')) {
+        document.getElementById('register-modal').style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
